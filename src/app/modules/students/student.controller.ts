@@ -2,8 +2,6 @@ import { NextFunction, Request, RequestHandler, Response, response } from 'expre
 import { studentService } from './student.service'
 import catchAsync from '../../utils/catchAsync'
 
-
-
 const getStudents  = catchAsync(async (req, res, next) => {
     const result = await studentService.getAllStudentsFromDB()
 

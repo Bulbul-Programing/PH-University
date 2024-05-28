@@ -31,12 +31,12 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 }, {_id : false})
 
 const studentSchema = new Schema<TStudents, studentModel>({
-  id: { type: String },
+  id : {type :String, required : false},
   name: {
     type: studentNameSchema,
     required: true,
   },
-  user : {type : Schema.Types.ObjectId, required : [true, 'User id is required'], unique : true, ref : 'user'},
+  user : {type: Schema.ObjectId, },
   gender: { type: String, enum: ['male', 'female'], required: true },
   dateOfBirth: { type: String },
   email: { type: String, required: true },
