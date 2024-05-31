@@ -10,3 +10,9 @@ export type TAcademicSemester = {
     startMonth : TMonth,
     endMonth : TMonth
 }
+
+export type TAcademicSemesterCodeAndNameValidation ={
+    Autumn : string,
+    Summer : string,
+    Fall : string
+}
