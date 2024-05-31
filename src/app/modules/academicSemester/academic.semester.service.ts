@@ -13,6 +13,18 @@ const createAcademicSemesterIntoDb = async(semesterData : TAcademicSemester) =>{
     return result
 }
 
+const allAcademicSemesterIntoDb = async()=> {
+    const result = await academicSemesterModel.find()
+    return result
+}
+
+const singleAcademicSemesterIntoDb = async (id : string) => {
+    const result = await academicSemesterModel.findOne({_id : id})
+    return result
+}
+
 export const AcademicSemesterService = {
-    createAcademicSemesterIntoDb
+    createAcademicSemesterIntoDb,
+    allAcademicSemesterIntoDb,
+    singleAcademicSemesterIntoDb
 }
