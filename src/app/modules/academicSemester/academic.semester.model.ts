@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { TAcademicSemester } from './academic.semester.interface'
 import { academicSemesterCode, academicSemesterMonth, academicSemesterName } from './academic.semester.constant'
-import { string } from 'zod'
 
 const academicSemesterSchema = new Schema<TAcademicSemester>({
   name: { type: String, enum: academicSemesterName, required: true },
