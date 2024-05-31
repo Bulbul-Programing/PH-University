@@ -6,6 +6,7 @@ import {
   TStudentName,
   studentModel,
 } from './student.interface'
+import { string } from 'zod'
 
   
 const studentNameSchema = new Schema<TStudentName>({
@@ -31,7 +32,7 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 }, {_id : false})
 
 const studentSchema = new Schema<TStudents, studentModel>({
-  id : {type :String, required : false},
+  id : {type :String, required : false, unique : true,},
   name: {
     type: studentNameSchema,
     required: true,
@@ -39,7 +40,7 @@ const studentSchema = new Schema<TStudents, studentModel>({
   user : {type: Schema.ObjectId, },
   gender: { type: String, enum: ['male', 'female'], required: true },
   dateOfBirth: { type: String },
-  email: { type: String, required: true },
+  email: { type: String, required: true,unique:true },
   contactNo: { type: String, required: true },
   emergencyContactNo: { type: String, required: true },
   bloodGroup: {
@@ -58,6 +59,7 @@ const studentSchema = new Schema<TStudents, studentModel>({
     type: localGuardianSchema,
     required: true,
   },
+  admissionSemester : {type : String},
 })
 
 // builtin static method.
