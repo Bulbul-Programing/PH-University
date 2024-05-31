@@ -23,8 +23,18 @@ const singleAcademicSemesterIntoDb = async (id : string) => {
     return result
 }
 
+const updateAcademicSemesterIntoDB = async(id : string, updateData : Partial<TAcademicSemester>) => {
+    if(updateData.name && updateData.code && academicSemesterCodeAndNameValidation[updateData.name] !== updateData.code){
+        throw new Error('Invalid Semester Code')
+    }
+
+    const result = await academicSemesterModel.findOneAndUpdate({_id : id}, updateData, {new : true})
+    return result
+}
+
 export const AcademicSemesterService = {
     createAcademicSemesterIntoDb,
     allAcademicSemesterIntoDb,
-    singleAcademicSemesterIntoDb
+    singleAcademicSemesterIntoDb,
+    updateAcademicSemesterIntoDB
 }
