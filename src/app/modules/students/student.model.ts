@@ -6,7 +6,6 @@ import {
   TStudentName,
   studentModel,
 } from './student.interface'
-import { string } from 'zod'
 
   
 const studentNameSchema = new Schema<TStudentName>({
@@ -59,7 +58,9 @@ const studentSchema = new Schema<TStudents, studentModel>({
     type: localGuardianSchema,
     required: true,
   },
-  admissionSemester : {type : String},
+  admissionSemester : {type : Schema.Types.ObjectId, ref: 'AcademicSemester', required : true},
+  academicFaculty : {type : Schema.Types.ObjectId, required : true, ref : 'academicFaculty'},
+  academicDepartment : {type : Schema.Types.ObjectId, required : true, ref: 'academicDepartment'}
 })
 
 // builtin static method.

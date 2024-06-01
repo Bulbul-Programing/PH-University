@@ -37,7 +37,9 @@ export type TStudents = {
   guardian: TGuardian
   localGuardian: TLocalGuardian
   profileImage?: string
-  admissionSemester : string
+  admissionSemester : Types.ObjectId
+  academicFaculty : Types.ObjectId
+  academicDepartment : Types.ObjectId
 }
 
 // builtin static method.
