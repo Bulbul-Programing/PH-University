@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import catchAsync from '../../utils/catchAsync'
 import { academicDepartmentService } from './academicDepartment.service'
+import AppError from '../../error/AppError'
 
 const createAcademicDepartment = catchAsync(
   async (req: Request, res: Response) => {
@@ -39,7 +40,7 @@ const getSingleAcademicDepartment = catchAsync(
         departmentId,
       )
     if (result === null) {
-      throw new Error('Department Id is invalid')
+      throw new AppError(500,'Department Id is invalid')
     } else {
       res.status(200).json({
         success: true,

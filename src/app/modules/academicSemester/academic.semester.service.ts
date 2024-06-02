@@ -2,12 +2,13 @@ import { Error } from "mongoose"
 import { TAcademicSemester } from "./academic.semester.interface"
 import { academicSemesterModel } from "./academic.semester.model"
 import { academicSemesterCodeAndNameValidation } from "./academic.semester.constant"
+import AppError from "../../error/AppError"
 
 
 const createAcademicSemesterIntoDb = async(semesterData : TAcademicSemester) =>{
 
     if(academicSemesterCodeAndNameValidation[semesterData.name] !== semesterData.code ){
-        throw new Error('Invalid semester code.')
+        throw new AppError(500,'Invalid semester code.')
     }
     const result = await academicSemesterModel.create(semesterData)
     return result
@@ -25,7 +26,7 @@ const singleAcademicSemesterIntoDb = async (id : string) => {
 
 const updateAcademicSemesterIntoDB = async(id : string, updateData : Partial<TAcademicSemester>) => {
     if(updateData.name && updateData.code && academicSemesterCodeAndNameValidation[updateData.name] !== updateData.code){
-        throw new Error('Invalid Semester Code')
+        throw new AppError(500,'Invalid Semester Code')
     }
 
     const result = await academicSemesterModel.findOneAndUpdate({_id : id}, updateData, {new : true})
