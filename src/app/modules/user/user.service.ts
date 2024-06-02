@@ -40,8 +40,6 @@ const createStudentIntoDB = async (
         studentData.id = newUser[0].id
         studentData.user = newUser[0]._id
 
-        console.log(studentData);
-
         // create a student (transition-2)
         const newStudent = await Student.create([studentData], {session})
 

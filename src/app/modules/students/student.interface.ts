@@ -40,6 +40,7 @@ export type TStudents = {
   admissionSemester : Types.ObjectId
   academicFaculty : Types.ObjectId
   academicDepartment : Types.ObjectId
+  isDeleted : boolean
 }
 
 // builtin static method.

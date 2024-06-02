@@ -6,5 +6,6 @@ const router = express.Router()
 // router.post('/create-student', studentControllers.createStudent)
 router.get('/', studentControllers.getStudents)
 router.get('/:studentId', studentControllers.getSingleStudent)
+router.patch('/:studentId', studentControllers.deletedStudent)
 
 export const StudentRouter = router

@@ -6,6 +6,7 @@ import {
   TStudentName,
   studentModel,
 } from './student.interface'
+import AppError from '../../error/AppError'
 
   
 const studentNameSchema = new Schema<TStudentName>({
@@ -60,7 +61,8 @@ const studentSchema = new Schema<TStudents, studentModel>({
   },
   admissionSemester : {type : Schema.Types.ObjectId, ref: 'AcademicSemester', required : true},
   academicFaculty : {type : Schema.Types.ObjectId, required : true, ref : 'academicFaculty'},
-  academicDepartment : {type : Schema.Types.ObjectId, required : true, ref: 'academicDepartment'}
+  academicDepartment : {type : Schema.Types.ObjectId, required : true, ref: 'academicDepartment'},
+  isDeleted : {type : Boolean, default : false}
 })
 
 // builtin static method.
@@ -81,6 +83,18 @@ studentSchema.virtual('fullName').get(function(){
   return this.name.firstName + this.name.middleName + this.name.firstName
 })
 
+studentSchema.pre('findOneAndUpdate', async function (next){
+  const query = this.getQuery()
+
+  const isStudentExist = await Student.findOne(query)
+  
+  if(!isStudentExist){
+    throw new AppError(404,'student dose not found')
+  }
+  else{
+    next()
+  }
+})
 
 
 export const Student = model<TStudents, studentModel>('student', studentSchema)
