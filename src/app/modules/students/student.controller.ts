@@ -37,6 +37,22 @@ const getSingleStudent = async (
   }
 }
 
+const updateStudent = catchAsync(async (req: Request, res: Response) => {
+  const { studentId } = req.params
+  const {student} = req.body
+  const result = await studentService.updateStudentFromDB(studentId, student)
+  
+  if(!result){
+    throw new AppError(404, 'student dose not exist')
+  }
+  
+  res.status(200).json({
+    success: true,
+    massage: ' Single Deleted successfully',
+    data: result,
+  })
+})
+
 const deletedStudent = catchAsync(async (req: Request, res: Response) => {
   const { studentId } = req.params
   const result = await studentService.deleteStudentFromDB(studentId)
@@ -53,5 +69,6 @@ const deletedStudent = catchAsync(async (req: Request, res: Response) => {
 export const studentControllers = {
   getStudents,
   getSingleStudent,
+  updateStudent,
   deletedStudent
 }

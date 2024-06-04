@@ -4,6 +4,7 @@ import { Student } from './student.model'
 import mongoose from 'mongoose'
 import AppError from '../../error/AppError'
 import { userModel } from '../user/user.model'
+import { object } from 'zod'
 
 const getAllStudentsFromDB = async () => {
   const result = await Student.find()
@@ -28,6 +29,32 @@ const getSingleStudentDataFromDB = async (id: string) => {
         path: 'academicFaculty',
       },
     })
+  return result
+}
+
+const updateStudentFromDB = async (id: string, payload : Partial<TStudents>) => {
+  
+  const {name , guardian, localGuardian, ...remainingStudentData } = payload
+  
+  const modifiedUpdateData : Record<string , unknown> = {...remainingStudentData}
+  
+  if(name && Object.keys(name).length){
+    for (const [key, value] of Object.entries(name)){
+      modifiedUpdateData[`name.${key}`] = value
+    }
+  }
+  if(guardian && Object.keys(guardian).length){
+    for (const [key, value] of Object.entries(guardian)){
+      modifiedUpdateData[`guardian.${key}`] = value
+    }
+  }
+  if(localGuardian && Object.keys(localGuardian).length){
+    for (const [key, value] of Object.entries(localGuardian)){
+      modifiedUpdateData[`localGuardian.${key}`] = value
+    }
+  }
+
+  const result = await Student.findOneAndUpdate({id}, modifiedUpdateData, {new : true})
   return result
 }
 
@@ -68,5 +95,6 @@ const deleteStudentFromDB = async (id: string) => {
 export const studentService = {
   getAllStudentsFromDB,
   getSingleStudentDataFromDB,
+  updateStudentFromDB,
   deleteStudentFromDB,
 }
