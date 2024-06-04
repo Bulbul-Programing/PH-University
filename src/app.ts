@@ -15,17 +15,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello server!')
 })
 
-app.use((err : any, req :Request, res : Response, next: NextFunction)=>{
-  
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Something is wrong'
-
-  return res.status(statusCode).json({
-    success : false,
-    message : message,
-    error : err
-  })
-})
 
 app.use((req : Request, res : Response) => {
   return res.status(400).json({
