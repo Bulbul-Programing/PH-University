@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import catchAsync from '../../utils/catchAsync'
 import { academicFacultyService } from './academicFaculty.service'
+import { ZodError } from 'zod'
 
 const createAcademicFaculty = catchAsync(
   async (req: Request, res: Response) => {
     const facultyData = req.body
     const result =
       await academicFacultyService.createAcademicFacultyIntoDb(facultyData)
-
     res.status(200).json({
       success: true,
       message: 'Academic faculty create successfully',
