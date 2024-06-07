@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express'
 import { ZodError, ZodIssue } from 'zod'
 import { TErrorSource } from '../interface/error'
 import config from '../config'
+import handleZodError from '../error/handleZodvalidationError'
+import handleMongooseError from '../error/handleMongoseValidationError'
 
 const globalErrorHandler = (
   err: any,
@@ -19,27 +21,16 @@ const globalErrorHandler = (
     }
   ]
 
-  const handleZodError = (error : ZodError) => {
-    const statusCode = 400
-    const errorSources : TErrorSource= error.issues.map((issue : ZodIssue)=>{
-      return {
-        path : issue.path[issue.path.length - 1],
-        message : issue.message
-      }
-    })
-
-    return {
-      statusCode,
-      message : 'zod validation error',
-      errorSources 
-    }
-  }
-
-
   if (err instanceof ZodError) {
     const simpleError = handleZodError(err)
     statusCode = simpleError?.statusCode,
     message = simpleError?.message,
+    errorSources = simpleError?.errorSources
+  }
+  else if(err.name === 'ValidationError'){
+    const simpleError = handleMongooseError(err)
+    statusCode = simpleError?.statusCode,
+    message = simpleError?.statusCode,
     errorSources = simpleError?.errorSources
   }
 
