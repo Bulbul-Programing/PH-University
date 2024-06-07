@@ -4,6 +4,9 @@ import { TErrorSource } from '../interface/error'
 import config from '../config'
 import handleZodError from '../error/handleZodvalidationError'
 import handleMongooseError from '../error/handleMongoseValidationError'
+import handleCastError from '../error/handleCastError'
+import handleDuplicateError from '../error/handleDupleacteError'
+import AppError from '../error/AppError'
 
 const globalErrorHandler = (
   err: any,
@@ -32,6 +35,34 @@ const globalErrorHandler = (
     statusCode = simpleError?.statusCode,
     message = simpleError?.statusCode,
     errorSources = simpleError?.errorSources
+  }
+  else if(err.name === 'CastError'){
+    const simpleError = handleCastError(err)
+    statusCode = simpleError?.statusCode,
+    message = simpleError?.message,
+    errorSources = simpleError?.errorSources
+  }
+  else if(err?.code === 1100){
+    const simpleError = handleDuplicateError(err)
+    statusCode = simpleError?.statusCode,
+    message = simpleError?.message,
+    errorSources = simpleError?.errorSources
+  }
+  else if(err instanceof AppError){
+    statusCode = err?.statusCode,
+    message = err?.message,
+    errorSources = [{
+      path : '',
+      message : err.message
+    }]
+  }
+  else if(err instanceof Error){
+    statusCode = statusCode,
+    message = err?.message,
+    errorSources = [{
+      path : '',
+      message : err.message
+    }]
   }
 
   return res.status(statusCode).json({
