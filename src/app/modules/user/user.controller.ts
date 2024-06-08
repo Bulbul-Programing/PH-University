@@ -6,26 +6,17 @@ const createStudent = async (
   res: Response,
   next: NextFunction,
 ) => {
+  
   try {
     const { password, student } = req.body
-
     // will call service function for to send data
     const result = await userService.createStudentIntoDB(password, student)
     // send response
-
-    if (result?.errors) {
-      res.status(500).json({
-        success: false,
-        massage: 'student creation failed',
-        data: result,
-      })
-    } else {
-      res.status(200).json({
-        success: true,
-        massage: 'Student is create successfully',
-        data: result,
-      })
-    }
+    res.status(200).json({
+      success: true,
+      massage: 'Student is create successfully',
+      data: result,
+    })
   } catch (err) {
     next(err)
   }

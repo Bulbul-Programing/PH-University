@@ -15,7 +15,6 @@ const createStudentIntoDB = async (
   const academicSemester = await academicSemesterModel.findById(
     studentData.admissionSemester,
   )
-
   const session = await mongoose.startSession()
   try {
 
@@ -32,17 +31,15 @@ const createStudentIntoDB = async (
 
       // crete a user (transition-1)
       const newUser = await userModel.create([user], {session})
-
+     
       if (!newUser.length) {
         throw new AppError(500, 'Fail to create user')
       }
       else{
         studentData.id = newUser[0].id
         studentData.user = newUser[0]._id
-
         // create a student (transition-2)
         const newStudent = await Student.create([studentData], {session})
-
         if(!newStudent){
           throw new AppError(500, 'Fail to create student')
         }

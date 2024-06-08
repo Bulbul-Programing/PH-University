@@ -6,17 +6,40 @@ import AppError from '../../error/AppError'
 import { userModel } from '../user/user.model'
 import { object } from 'zod'
 
-const getAllStudentsFromDB = async () => {
-  const result = await Student.find()
-    .populate('admissionSemester')
-    .populate('academicFaculty')
-    .populate({
-      path: 'academicDepartment',
-      populate: {
-        path: 'academicFaculty',
-      },
-    })
-  return result
+const getAllStudentsFromDB = async (query : Record<string , unknown>) => {
+  let searchTerm = ''
+  const queryObj = {...query}
+  if(query?.searchTerm){
+    searchTerm = query.searchTerm as string
+  }
+  const studentSearchAbleFields : string[]= ['name.firstName', 'email', 'presentAddress']
+
+  const searchQuery = Student.find({
+    $or : studentSearchAbleFields.map((field)=>({
+      [field] : {$regex : searchTerm, $options : 'i'}
+    }))
+  })
+
+  const excludeFields : string[] = ['searchTerm','sort']
+  excludeFields.forEach(el => delete queryObj[el])
+ 
+  const filterSearch = searchQuery.find(queryObj)
+  .populate('admissionSemester')
+  .populate('academicFaculty')
+  .populate({
+    path: 'academicDepartment',
+    populate: {
+      path: 'academicFaculty',
+    },
+  })
+
+  let sort = '-createdAt'
+
+  if(query.sort){
+    sort = query.sort as string
+  }
+  const sortQuery = await filterSearch.sort(sort)
+  return sortQuery
 }
 
 const getSingleStudentDataFromDB = async (id: string) => {

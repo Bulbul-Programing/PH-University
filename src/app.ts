@@ -15,7 +15,6 @@ app.use(globalErrorHandler)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello server!')
-  Promise.reject()
 })
 
 app.use((req : Request, res : Response) => {

@@ -10,8 +10,9 @@ import catchAsync from '../../utils/catchAsync'
 import AppError from '../../error/AppError'
 
 const getStudents = catchAsync(async (req, res, next) => {
-  const result = await studentService.getAllStudentsFromDB()
-
+  const query = req.query
+  const result = await studentService.getAllStudentsFromDB(query)
+  
   res.status(200).json({
     success: true,
     massage: 'Student data send successfully',
