@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 import AppError from '../../error/AppError'
 import { userModel } from '../user/user.model'
 import { object } from 'zod'
-import QueryBuilder from '../../builder/QertyBuilder'
+import QueryBuilder from '../../builder/QueryBuilder'
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
   // let searchTerm = ''

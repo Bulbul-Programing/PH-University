@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { userService } from './user.service'
+import AppError from '../../error/AppError'
 
 const createStudent = async (
   req: Request,
@@ -22,6 +23,28 @@ const createStudent = async (
   }
 }
 
+const createFaculty = async(req : Request, res: Response, next : NextFunction) => {
+  try{
+    const {password, faculty} = req.body
+    const result = await userService.createFacultyIntoDB(password, faculty)
+    
+    if(result){
+      res.status(200).json({
+        success: true,
+        massage: 'Student is create successfully',
+        data: result,
+      })
+    }
+    else{
+      throw new AppError(500, 'something want worng')
+    }
+  }
+  catch(err){
+    next(err)
+  }
+}
+
 export const userController = {
   createStudent,
+  createFaculty
 }

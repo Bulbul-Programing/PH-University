@@ -29,4 +29,18 @@ export const generateId = async (payload : TAcademicSemester) => {
     return incrementId
 }
 
+export const generateFacultyId = async()=>{
+    const lastFaculty = await userModel.findOne({role : 'faculty'},{id: 1, _id : 0}).sort({createdAt : -1}).lean()
+
+    if(lastFaculty){
+        const facultyIdString = (lastFaculty.id).split('F')
+        const facultyId = (Number(facultyIdString[1]) + 1).toString().padStart(4, '0')
+        const facultyIdWithString = `F${facultyId}`
+        return facultyIdWithString
+    }
+    else{
+        return 'F0001'
+    }
+}
+
 
