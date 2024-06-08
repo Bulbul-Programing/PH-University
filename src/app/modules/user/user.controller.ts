@@ -37,7 +37,7 @@ const createFaculty = async(req : Request, res: Response, next : NextFunction) =
     }
     else{
       throw new AppError(500, 'something want worng')
-    }
+    } 
   }
   catch(err){
     next(err)
