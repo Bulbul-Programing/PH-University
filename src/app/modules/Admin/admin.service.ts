@@ -67,7 +67,7 @@ const deleteAdminFromDB = async (id: string) => {
     const deletedUser = await userModel.findOneAndUpdate(
       { _id: userId },
       { isDeleted: true },
-      { new: true, session },
+      { new: true, session }, 
     )
 
     if (!deletedUser) {
