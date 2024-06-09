@@ -7,10 +7,10 @@ import { TNewUser } from './user.interface'
 import { userModel } from './user.model'
 import { generateFacultyId, generateId } from './user.utils'
 import AppError from '../../error/AppError'
-import { TFaculty } from '../Faculty/Faculty.interface'
 import { AcademicDepartmentModel } from '../academicDepartment/academicDepartment.model'
 import { academicFacultyModel } from '../academicFaculty/academicFaculty.model'
 import { FacultyModel } from '../Faculty/faculty.model'
+import { TFaculty } from '../Faculty/Faculty.interface'
 
 const createStudentIntoDB = async (
   password: string,
@@ -72,7 +72,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
   if (!academicFaculty) {
     throw new AppError(404,'Academic Department not found')
   }
-
+  
   const session = await mongoose.startSession()
   try {
     session.startTransaction()
@@ -90,7 +90,6 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
     } else {
       payload.id = newUser[0].id
       payload.user = newUser[0]._id
-
       const createFaculty = await FacultyModel.create([payload], {session})
       if(!createFaculty){
         throw new AppError(500, 'Faculty create failed')

@@ -12,6 +12,6 @@ router.post(
   userController.createStudent,
 )
 
-router.post('/users/create-faculty',validateRequest(FacultyValidationSchema), userController.createFaculty)
+router.post('/users/create-faculty',validateRequest(FacultyValidationSchema.createFacultySchema), userController.createFaculty)
 
 export const userRouter = router

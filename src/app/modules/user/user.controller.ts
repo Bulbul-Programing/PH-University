@@ -27,7 +27,7 @@ const createFaculty = async(req : Request, res: Response, next : NextFunction) =
   try{
     const {password, faculty} = req.body
     const result = await userService.createFacultyIntoDB(password, faculty)
-    
+
     if(result){
       res.status(200).json({
         success: true,
@@ -36,7 +36,7 @@ const createFaculty = async(req : Request, res: Response, next : NextFunction) =
       })
     }
     else{
-      throw new AppError(500, 'something want worng')
+      throw new AppError(500, 'something want wrong')
     } 
   }
   catch(err){
