@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { courseService } from './course.service'
+import catchAsync from '../../utils/catchAsync'
 
-const createCourse = async (req: Request, res: Response) => {
+const createCourse = catchAsync(async (req: Request, res: Response) => {
   const courseData = req.body
   const result = await courseService.cerateCourseIntoDB(courseData)
 
@@ -10,9 +11,9 @@ const createCourse = async (req: Request, res: Response) => {
     message: 'course create successfully',
     data: result,
   })
-}
+})
 
-const getAllCourse = async (req: Request, res: Response) => {
+const getAllCourse = catchAsync(async (req: Request, res: Response) => {
   const result = await courseService.getAllCourseIntoDB()
 
   res.status(200).json({
@@ -20,33 +21,33 @@ const getAllCourse = async (req: Request, res: Response) => {
     message: 'all course are retrieved successfully',
     data: result,
   })
-}
+})
 
-const getSingleCourse = async (req: Request, res: Response) => {
-    const {id} = req.params
-    const result = await courseService.getSingleCourseIntoDB(id)
-
-  res.status(200).json({
-    success: true,
-    message: 'single course retrieved successfully',
-    data: result,
-  })
-}
-
-const deleteCourse = async (req: Request, res: Response) => {
-    const {id} = req.params
-    const result = await courseService.deleteCourseIntoDB(id)
+const getSingleCourse = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params
+  const result = await courseService.getSingleCourseIntoDB(id)
 
   res.status(200).json({
     success: true,
     message: 'single course retrieved successfully',
     data: result,
   })
-}
+})
+
+const deleteCourse = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params
+  const result = await courseService.deleteCourseIntoDB(id)
+
+  res.status(200).json({
+    success: true,
+    message: 'single course retrieved successfully',
+    data: result,
+  })
+})
 
 export const courseController = {
-    createCourse,
-    getAllCourse,
-    getSingleCourse,
-    deleteCourse
+  createCourse,
+  getAllCourse,
+  getSingleCourse,
+  deleteCourse,
 }
