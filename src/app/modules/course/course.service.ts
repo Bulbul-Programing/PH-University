@@ -37,15 +37,25 @@ const updateCourseIntoDB = async (id: string, payload : TCourse) => {
 
     const {preRequisiteCourse, ...BasicCourseInfo} = payload
 
-    // const updateRemainingCourse = await courseModel.findByIdAndUpdate(id, BasicCourseInfo, {new : true, runValidators : true})
-
+    const updateRemainingCourse = await courseModel.findByIdAndUpdate(id, BasicCourseInfo, {new : true, runValidators : true})
+    
     if(preRequisiteCourse && preRequisiteCourse.length > 0){
         const deletedPreRequisite = preRequisiteCourse.filter(el => el.course && el.isDeleted).map(el => el.course)
-        console.log(deletedPreRequisite);
+       
         const deletedPreRequisiteCourse = await courseModel.findByIdAndUpdate(id,{
             $pull : {preRequisiteCourse : {course : {$in : deletedPreRequisite}}}
-        }) 
+        })
+
+        const newPreRequisite = preRequisiteCourse.filter((el) => el.course && !el.isDeleted)
+
+        const newPreRequisiteCourse = await courseModel.findByIdAndUpdate(id, {
+            $addToSet : {preRequisiteCourse : {$each : newPreRequisite}}
+        })
     }
+
+    const updateData = await courseModel.findById(id).populate('preRequisiteCourse.course')
+
+    return updateData
 }
 
 export const courseService = {
