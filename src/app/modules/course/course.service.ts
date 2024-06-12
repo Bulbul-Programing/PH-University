@@ -44,7 +44,7 @@ const updateCourseIntoDB = async (id: string, payload : TCourse) => {
         console.log(deletedPreRequisite);
         const deletedPreRequisiteCourse = await courseModel.findByIdAndUpdate(id,{
             $pull : {preRequisiteCourse : {course : {$in : deletedPreRequisite}}}
-        })
+        }) 
     }
 }
 
