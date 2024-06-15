@@ -135,5 +135,5 @@ export const courseService = {
   deleteCourseIntoDB,
   updateCourseIntoDB,
   assignFacultiesWithCourseIntoDB,
-  removeFacultiesWithCourseIntoDB
+  removeFacultiesWithCourseIntoDB,
 }
