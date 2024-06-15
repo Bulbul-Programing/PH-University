@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 const preRequisiteCourseSchema = z.object({
-    title : z.string(),
-    isDeleted : z.string().optional()
+  title: z.string(),
+  isDeleted: z.string().optional()
 })
 
 const createCourseValidationSchema = z.object({
@@ -16,8 +16,8 @@ const createCourseValidationSchema = z.object({
 })
 
 const updatePreRequisiteCourseSchema = z.object({
-    title : z.string(),
-    isDeleted : z.string()
+  title: z.string(),
+  isDeleted: z.string()
 })
 
 const updateCourseValidationSchema = z.object({
@@ -30,7 +30,20 @@ const updateCourseValidationSchema = z.object({
   }),
 })
 
+const assignCourseFacultyValidationSchema = z.object({
+  body: z.object({
+    faculties: z.array(z.string())
+  })
+})
+const removeCourseFacultyValidationSchema = z.object({
+  body: z.object({
+    faculties: z.array(z.string()).optional()
+  })
+})
+
 export const CourseValidation = {
-    createCourseValidationSchema,
-    updateCourseValidationSchema
+  createCourseValidationSchema,
+  updateCourseValidationSchema,
+  assignCourseFacultyValidationSchema,
+  removeCourseFacultyValidationSchema
 }
