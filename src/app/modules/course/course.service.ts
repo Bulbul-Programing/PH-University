@@ -122,7 +122,7 @@ const removeFacultiesWithCourseIntoDB = async (id: string, payload: TCourseFacul
   console.log(payload);
   const result = await CourseFacultyModel.findByIdAndUpdate(id, {
     $pull: { faculties: { $in: payload } }
-  }, { new: true })
+  }, { new: true }) 
 
   return result
 
