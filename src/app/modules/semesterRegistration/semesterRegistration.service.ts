@@ -7,6 +7,16 @@ import { SemesterRegistrationModel } from "./semesterRegistration.model";
 
 const createSemesterRegistrationIntoDB = async (payload: TSemesterRegistration) => {
 
+    // check if there any registered semester that is already 'upcoming|ongoing'.
+
+    const isThereAnyUpcomingOrOngoingSemester = await SemesterRegistrationModel.findOne({
+        $or :[{status : 'UPCOMING'}, {status : 'ONGOING'}]
+    })
+
+    if(isThereAnyUpcomingOrOngoingSemester){
+        throw new AppError(400, `There is already an ${isThereAnyUpcomingOrOngoingSemester.status} register semester`)
+    }
+
     // checking academic semester is exist.
 
     const academicSemesterIsExist = await academicSemesterModel.findById(payload.academicSemester)
@@ -39,10 +49,25 @@ const getSingleRegistrationIntoDB = async (id: string) => {
     return result 
 }
 
+const updateSemesterRegisterIntoDB = async(id: string, payload : Partial<TSemesterRegistration>) => {
+    // checking semester exist
+    const isSemesterRegisterExists = await SemesterRegistrationModel.findById(id)
+
+    if(!isSemesterRegisterExists){
+        throw new AppError(400, 'This semester is not found!')
+    }
+    
+    const currantSemesterStatus = isSemesterRegisterExists?.status
+    if(currantSemesterStatus === 'ENDED'){
+        throw new AppError(500, `this semester already ${currantSemesterStatus}`)
+    }
+
+}
+
 
 export const semesterRegistrationService = {
     createSemesterRegistrationIntoDB,
     getAllSemesterRegistrationIntoDB,
-    getSingleRegistrationIntoDB
-
+    getSingleRegistrationIntoDB,
+    updateSemesterRegisterIntoDB
 }
