@@ -7,41 +7,46 @@ import { academicDepartmentRouter } from "../modules/academicDepartment/academic
 import { FacultyRouter } from "../modules/Faculty/faculty.routes";
 import { AdminRoutes } from "../modules/Admin/admin.routes";
 import { courseRouter } from "../modules/course/course.routes";
+import { semesterRegistrationRouter } from "../modules/semesterRegistration/semesterRegistration.routes";
 
 const router = Router()
 
 const moduleRoutes = [
     {
-        path : '/students',
-        route : StudentRouter
+        path: '/students',
+        route: StudentRouter
     },
     {
-        path : '/user',
-        route : userRouter
+        path: '/user',
+        route: userRouter
     },
     {
-        path : '/semester',
-        route : AcademicSemesterRoute
+        path: '/semester',
+        route: AcademicSemesterRoute
     },
     {
-        path : '/academicFaculty',
-        route : academicFacultyRouter
+        path: '/academicFaculty',
+        route: academicFacultyRouter
     },
     {
-        path : '/department',
-        route : academicDepartmentRouter
+        path: '/department',
+        route: academicDepartmentRouter
     },
     {
-        path : '/faculty',
-        route : FacultyRouter
+        path: '/faculty',
+        route: FacultyRouter
     },
     {
-        path : '/admin',
-        route : AdminRoutes
+        path: '/admin',
+        route: AdminRoutes
     },
     {
-        path : '/course',
-        route : courseRouter
+        path: '/course',
+        route: courseRouter
+    },
+    {
+        path: '/semester-registrations',
+        route: semesterRegistrationRouter,
     }
 ]
 
