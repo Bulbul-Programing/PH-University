@@ -25,3 +25,5 @@ const courseFacultySchema = new Schema<TCourseFaculty>({
 })
 
 export const CourseFacultyModel = model<TCourseFaculty>('courseFaculty', courseFacultySchema)
+
+

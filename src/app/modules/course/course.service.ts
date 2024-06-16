@@ -111,15 +111,14 @@ const updateCourseIntoDB = async (id: string, payload: TCourse) => {
 const assignFacultiesWithCourseIntoDB = async (id: string, payload: TCourseFaculty) => {
   const result = await CourseFacultyModel.findByIdAndUpdate(id, {
     course: id,
-    $addToSet: { faculties: { $each: payload } }
-  }, { upsert: true, new: true })
-
-  return result
+    $addToSet: { faculties: { $each: payload } } 
+  }, { upsert: true, new: true }) 
+  
+  return result 
 
 }
 
 const removeFacultiesWithCourseIntoDB = async (id: string, payload: TCourseFaculty) => {
-  console.log(payload);
   const result = await CourseFacultyModel.findByIdAndUpdate(id, {
     $pull: { faculties: { $in: payload } }
   }, { new: true }) 
