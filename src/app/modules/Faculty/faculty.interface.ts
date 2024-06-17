@@ -7,7 +7,7 @@ export type TFacultyUserName = {
     middleName ?: string,
     lastName : string
 }
-export type TFaculty = {
+export type TFacultyInterface = {
   id : string,
   name: TFacultyUserName
   user : Types.ObjectId,

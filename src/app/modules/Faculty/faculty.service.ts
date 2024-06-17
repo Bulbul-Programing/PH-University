@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { FacultyModel } from "./faculty.model";
-import { TFaculty } from "./Faculty.interface";
+import { TFacultyInterface } from "./Faculty.interface";
 import { object } from "zod";
 
 
@@ -14,7 +14,7 @@ const getSingleFacultyIntoDB = async(id : string)=>{
     return result
 }
 
-const updateFacultyIntoDB = async(id : string, payload : Partial<TFaculty>)=>{
+const updateFacultyIntoDB = async(id : string, payload : Partial<TFacultyInterface>)=>{
    const {name, ...remainingFacultyData} = payload
    const modifiedUpdateData : Record<string, unknown> = {
     ...remainingFacultyData

@@ -10,10 +10,10 @@ const createSemesterRegistrationIntoDB = async (payload: TSemesterRegistration) 
     // check if there any registered semester that is already 'upcoming|ongoing'.
 
     const isThereAnyUpcomingOrOngoingSemester = await SemesterRegistrationModel.findOne({
-        $or :[{status : 'UPCOMING'}, {status : 'ONGOING'}]
+        $or: [{ status: 'UPCOMING' }, { status: 'ONGOING' }]
     })
 
-    if(isThereAnyUpcomingOrOngoingSemester){
+    if (isThereAnyUpcomingOrOngoingSemester) {
         throw new AppError(400, `There is already an ${isThereAnyUpcomingOrOngoingSemester.status} register semester`)
     }
 
@@ -46,22 +46,34 @@ const getAllSemesterRegistrationIntoDB = async (query: Record<string, unknown>) 
 
 const getSingleRegistrationIntoDB = async (id: string) => {
     const result = SemesterRegistrationModel.findById(id).populate('academicSemester')
-    return result 
+    return result
 }
 
-const updateSemesterRegisterIntoDB = async(id: string, payload : Partial<TSemesterRegistration>) => {
+const updateSemesterRegisterIntoDB = async (id: string, payload: Partial<TSemesterRegistration>) => {
     // checking semester exist
     const isSemesterRegisterExists = await SemesterRegistrationModel.findById(id)
 
-    if(!isSemesterRegisterExists){
+    if (!isSemesterRegisterExists) {
         throw new AppError(400, 'This semester is not found!')
     }
-    
+
     const currantSemesterStatus = isSemesterRegisterExists?.status
-    if(currantSemesterStatus === 'ENDED'){
+    const requestStatus = payload.status
+    if (currantSemesterStatus === 'ENDED') {
         throw new AppError(500, `this semester already ${currantSemesterStatus}`)
     }
 
+    if(currantSemesterStatus === 'UPCOMING' && requestStatus === 'ENDED'){
+        throw new AppError(500, `You can not directly change status from ${currantSemesterStatus} to ${requestStatus}`)
+    }
+
+    if(currantSemesterStatus === 'ONGOING' && requestStatus === 'UPCOMING'){
+        throw new AppError(500, `You can not directly change status from ${currantSemesterStatus} to ${requestStatus}`)
+    }
+
+    const result = await SemesterRegistrationModel.findByIdAndUpdate(id, payload, {new : true, runValidators : true})
+    
+    return result
 }
 
 

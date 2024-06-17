@@ -10,7 +10,7 @@ import AppError from '../../error/AppError'
 import { AcademicDepartmentModel } from '../academicDepartment/academicDepartment.model'
 import { academicFacultyModel } from '../academicFaculty/academicFaculty.model'
 import { FacultyModel } from '../Faculty/faculty.model'
-import { TFaculty } from '../Faculty/Faculty.interface'
+import { TFacultyInterface } from '../Faculty/faculty.interface'
 import { Admin } from '../Admin/admin.model'
 
 const createStudentIntoDB = async (
@@ -58,7 +58,7 @@ const createStudentIntoDB = async (
   }
 }
 
-const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
+const createFacultyIntoDB = async (password: string, payload: TFacultyInterface) => {
   
   const academicDepartment = await AcademicDepartmentModel.findById(
     payload.academicDepartment,
@@ -105,7 +105,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
   }
 }
 
-const createAdminIntoDB = async (password: string, payload: TFaculty) => {
+const createAdminIntoDB = async (password: string, payload: TFacultyInterface) => {
   // create a user object
   const userData: Partial<TNewUser> = {};
 

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TFaculty } from './Faculty.interface';
+import { TFacultyInterface } from './faculty.interface';
 
 const FacultyUserNameSchema = new Schema({
   firstName: { type: String, required: true },
@@ -7,7 +7,7 @@ const FacultyUserNameSchema = new Schema({
   lastName: { type: String, required: true }
 },{ _id: false });
 
-const FacultySchema = new Schema<TFaculty>({
+const FacultySchema = new Schema<TFacultyInterface>({
   id : {type : String, unique : true},
   name: { type: FacultyUserNameSchema, required: true },
   user : {type : Schema.Types.ObjectId},
@@ -27,4 +27,4 @@ const FacultySchema = new Schema<TFaculty>({
   isDeleted: { type: Boolean, default: false }
 });
 
-export const FacultyModel = model<TFaculty>('faculty', FacultySchema)
+export const FacultyModel = model<TFacultyInterface>('faculty', FacultySchema)
