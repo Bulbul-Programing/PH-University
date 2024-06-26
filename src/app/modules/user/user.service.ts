@@ -31,6 +31,7 @@ const createStudentIntoDB = async (
         id: userId,
         password: password || (config.default_password as string),
         role: 'student',
+        email : studentData.email
       }
 
       // crete a user (transition-1)
@@ -82,6 +83,7 @@ const createFacultyIntoDB = async (password: string, payload: TFacultyInterface)
       id: userId,
       password: password || (config.default_password as string),
       role: 'faculty',
+      email : payload.email
     }
 
     const newUser = await userModel.create([createNewUser], { session })
@@ -109,11 +111,12 @@ const createAdminIntoDB = async (password: string, payload: TFacultyInterface) =
   // create a user object
   const userData: Partial<TNewUser> = {};
 
-  //if password is not given , use default password
+  //if password is not given , use default password    
   userData.password = password || (config.default_password as string);
 
   //set student role
   userData.role = 'admin';
+  userData.email = payload.email
 
   const session = await mongoose.startSession();
 

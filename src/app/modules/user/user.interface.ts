@@ -5,6 +5,7 @@ export interface TUser  {
     id : string,
     password : string,
     needsPasswordChange : boolean,
+    email : string, 
     passwordChangedAt?: Date;
     role : 'admin' | 'student' | 'faculty',
     status : 'in-progress' | 'blocked'
@@ -14,7 +15,8 @@ export interface TUser  {
 export interface TNewUser {
     id :string,
     role : string,
-    password : string
+    password : string,
+    email : string
 }
 
 export interface UserModel extends Model<TUser> {
