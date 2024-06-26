@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { TUser } from './user.interface'
+import { TUser, UserModel } from './user.interface'
 import bcrypt from 'bcrypt'
 import config from '../../config'
 
@@ -28,4 +28,4 @@ userSchema.post('save', async function(doc,next){
   next()
 })
 
-export const userModel = model<TUser>('User', userSchema)
+export const userModel = model<TUser, UserModel>('User', userSchema)
