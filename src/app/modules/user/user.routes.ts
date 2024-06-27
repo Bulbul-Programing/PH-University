@@ -4,6 +4,8 @@ import { studentValidation } from '../students/student.validation'
 import validateRequest from '../../middleware/validateRequestData'
 import { FacultyValidationSchema } from '../Faculty/faculty.validation'
 import { createAdminValidationSchema } from '../Admin/admin.validation'
+import auth from '../../middleware/auth'
+import { userValidation } from './user.validation'
 
 const router = express.Router()
 
@@ -20,5 +22,10 @@ router.post(
   userController.createAdmin,
   
 );
+
+router.get('/me', auth('student', 'admin', 'faculty'), userController.getMe)
+
+router.post('/change-status/:id', auth('admin'), validateRequest(userValidation.changeStatus), userController.changeStatus)
+
 
 export const userRouter = router

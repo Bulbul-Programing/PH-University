@@ -12,6 +12,8 @@ import { academicFacultyModel } from '../academicFaculty/academicFaculty.model'
 import { FacultyModel } from '../Faculty/faculty.model'
 import { TFacultyInterface } from '../Faculty/faculty.interface'
 import { Admin } from '../Admin/admin.model'
+import jwt, { JwtPayload } from 'jsonwebtoken'
+
 
 const createStudentIntoDB = async (
   password: string,
@@ -154,8 +156,37 @@ const createAdminIntoDB = async (password: string, payload: TFacultyInterface) =
   }
 };
 
+const getMe = async (token : string) => {
+  const decoded = jwt.verify(
+    token,
+    config.jwt_access_secret as string,
+  ) as JwtPayload;
+
+  const {userId, role} = decoded
+
+  let result = null
+
+  if(role === 'student'){
+     result = await Student.findOne({id : userId})
+  }
+  if(role === 'admin'){
+     result = await Admin.findOne({id : userId})
+  }
+  if(role === 'faculty'){
+     result = await FacultyModel.findOne({id : userId})
+  }
+  return result
+}
+
+const changeStatusIntoDB = async (id: string, payload: {status : string}) =>{
+  const result = await userModel.findByIdAndUpdate({_id :id}, {status : payload.status}, {new : true})
+  return result
+}
+
 export const userService = {
   createStudentIntoDB,
   createFacultyIntoDB,
-  createAdminIntoDB
+  createAdminIntoDB,
+  getMe,
+  changeStatusIntoDB
 }

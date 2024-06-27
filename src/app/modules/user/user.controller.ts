@@ -45,7 +45,7 @@ const createFaculty = async(req : Request, res: Response, next : NextFunction) =
   }
 }
 
-const createAdmin = catchAsync(async (req, res) => {
+const createAdmin = catchAsync(async (req:Request, res: Response) => {
   const { password, admin: adminData } = req.body;
 
   const result = await userService.createAdminIntoDB(password, adminData);
@@ -57,8 +57,38 @@ const createAdmin = catchAsync(async (req, res) => {
   })
 });
 
+const getMe = catchAsync(async (req:Request, res: Response) => {
+  const token = req.headers.authorization 
+
+  if(!token){
+    throw new AppError(404, 'Token not found!')
+  }
+  const result = await userService.getMe(token);
+
+  res.status(200).json({
+    success: true,
+    message: 'data retrieve successfully',
+    data : result
+  })
+});
+
+const changeStatus = catchAsync(async(req:Request, res: Response)=>{
+  const id = req.params.id
+  const status = req.body
+
+  const result = await userService.changeStatusIntoDB(id, status)
+  
+  res.status(200).json({
+    success: true,
+    message: 'user Status change successfully',
+    data : result
+  })
+})
+
 export const userController = {
   createStudent,
   createFaculty,
-  createAdmin
+  createAdmin,
+  getMe,
+  changeStatus
 }
