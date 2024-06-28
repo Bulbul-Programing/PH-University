@@ -10,7 +10,7 @@ import { userValidation } from './user.validation'
 const router = express.Router()
 
 router.post(
-  '/users/create-student',
+  '/create-student',
   validateRequest(studentValidation.createStudentValidationSchema),
   userController.createStudent,
 )

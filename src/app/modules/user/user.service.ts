@@ -3,7 +3,7 @@ import config from '../../config'
 import { academicSemesterModel } from '../academicSemester/academic.semester.model'
 import { TStudents } from '../students/student.interface'
 import { Student } from '../students/student.model'
-import { TNewUser } from './user.interface'
+import { TNewUser, TUser } from './user.interface'
 import { userModel } from './user.model'
 import { generateAdminId, generateFacultyId, generateId } from './user.utils'
 import AppError from '../../error/AppError'
@@ -15,51 +15,108 @@ import { Admin } from '../Admin/admin.model'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
 
-const createStudentIntoDB = async (
-  password: string,
-  studentData: TStudents,
-) => {
-  const academicSemester = await academicSemesterModel.findById(
-    studentData.admissionSemester,
-  )
-  const session = await mongoose.startSession()
-  try {
-    session.startTransaction()
+// const createStudentIntoDB = async (
+//   password: string,
+//   studentData: TStudents,
+// ) => {
+//   const academicSemester = await academicSemesterModel.findById(
+//     studentData.admissionSemester,
+//   )
+//   const session = await mongoose.startSession()
+//   try {
+//     session.startTransaction()
 
-    if (academicSemester) {
-      const userId: string = await generateId(academicSemester)
+//     if (academicSemester) {
+//       const userId: string = await generateId(academicSemester)
 
-      const user: TNewUser = {
-        id: userId,
-        password: password || (config.default_password as string),
-        role: 'student',
-        email : studentData.email
-      }
+//       const user: TNewUser = {
+//         id: userId,
+//         password: password || (config.default_password as string),
+//         role: 'student',
+//         email : studentData.email
+//       }
 
-      // crete a user (transition-1)
-      const newUser = await userModel.create([user], { session })
+//       // crete a user (transition-1)
+//       const newUser = await userModel.create([user], { session })
+//       if (!newUser.length) {
+//         throw new AppError(500, 'Fail to create user')
+//       } else {
+//         studentData.id = newUser[0].id
+//         studentData.user = newUser[0]._id
+//         // create a student (transition-2)
+//         const newStudent = await Student.create([studentData], { session })
+        
+//         if (!newStudent) {
+//           throw new AppError(500, 'Fail to create student')
+//         }
 
-      if (!newUser.length) {
-        throw new AppError(500, 'Fail to create user')
-      } else {
-        studentData.id = newUser[0].id
-        studentData.user = newUser[0]._id
-        // create a student (transition-2)
-        const newStudent = await Student.create([studentData], { session })
-        if (!newStudent) {
-          throw new AppError(500, 'Fail to create student')
-        }
+//         await session.commitTransaction()
+//         await session.endSession()
+//         return newStudent
+//       }
+//     }
+//   } catch (err) {
+//     await session.abortTransaction()
+//     await session.endSession()
+//   }
+// }
 
-        await session.commitTransaction()
-        await session.endSession()
-        return newStudent
-      }
-    }
-  } catch (err) {
-    await session.abortTransaction()
-    await session.endSession()
+const createStudentIntoDB = async (password: string, payload: TStudents) => {
+  // create a user object
+  const userData: Partial<TUser> = {};
+
+  //if password is not given , use deafult password
+  userData.password = password || (config.default_password as string);
+
+  //set student role
+  userData.role = 'student';
+  userData.email = payload.email
+
+  // find academic semester info
+  const admissionSemester = await academicSemesterModel.findById(
+    payload.admissionSemester,
+  );
+
+  if (!admissionSemester) {
+    throw new AppError(400, 'Admission semester not found');
   }
-}
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+    //set  generated id
+    userData.id = await generateId(admissionSemester);
+
+    // create a user (transaction-1)
+    const newUser = await userModel.create([userData], { session }); // array
+
+    //create a student
+    if (!newUser.length) {
+      throw new AppError(500, 'Failed to create user');
+    }
+    // set id , _id as user
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id; //reference _id
+
+    // create a student (transaction-2)
+
+    const newStudent = await Student.create([payload], { session });
+
+    if (!newStudent.length) {
+      throw new AppError(500, 'Failed to create student');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newStudent;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
+};
 
 const createFacultyIntoDB = async (password: string, payload: TFacultyInterface) => {
   
