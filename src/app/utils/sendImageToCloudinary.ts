@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
 import multer from 'multer'
+const fs = require('fs');
 
 cloudinary.config({
   cloud_name: 'dmncfe9eh',
@@ -16,6 +17,13 @@ export const sendImageToCloudinary = async (imgName: string, path: string) => {
       .catch((error) => {
         console.log(error)
       })
+      fs.unlink(path, (err : any) => {
+        if (err) {
+          console.error(err);
+        } else {
+          
+        }
+      });
     return uploadResult
   }
 

@@ -97,10 +97,6 @@ const createStudentValidationSchema = z.object({
         required_error: 'Permanent address is required',
         invalid_type_error: 'Permanent address must be a string',
       }),
-      profileImage: z.string({
-        required_error: 'Profile image is required',
-        invalid_type_error: 'Profile image must be a string',
-      }),
       guardian: createGuardianSchema,
       localGuardian: createLocalGuardianSchema,
       admissionSemester: z.string(),
