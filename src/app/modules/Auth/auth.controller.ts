@@ -11,7 +11,7 @@ const loginUser = catchAsync(async (req, res) => {
     secure: config.NODE_ENV === 'production',
     httpOnly: true,
   })
-  
+
   res.status(200).json({
     success: true,
     message: 'User is logged in successfully!',
@@ -35,7 +35,7 @@ const changePassword = catchAsync(async (req, res) => {
 })
 
 const refreshToken = catchAsync(async (req, res) => {
-  const { refreshToken } = req.cookies
+  const  {refreshToken}  = req.cookies
   const result = await authServices.refreshToken(refreshToken)
 
   res.status(200).json({

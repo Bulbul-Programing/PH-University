@@ -5,8 +5,10 @@ import { userRouter } from './app/modules/user/user.routes'
 import router from './app/routes'
 import globalErrorHandler from './app/middleware/globalErrorHandler'
 const app: Application = express()
+import cookieParser from 'cookie-parser';
 
 //parser
+app.use(cookieParser());
 app.use(express.json())
 app.use(
   cors({
