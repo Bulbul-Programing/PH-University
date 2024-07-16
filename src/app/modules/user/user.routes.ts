@@ -15,6 +15,7 @@ router.post(
   auth('admin'),
   upload.single('file'),
   (req : Request, res : Response, next:NextFunction)=>{
+    console.log(req.body.data);
     req.body = JSON.parse(req.body.data)
     next()
   },

@@ -8,7 +8,16 @@ const app: Application = express()
 
 //parser
 app.use(express.json())
-app.use(cors())
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+    ],
+    credentials: true,
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  }),
+)
 
 app.use('/api/v1', router)
 app.use(globalErrorHandler)
@@ -17,11 +26,11 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello server!')
 })
 
-app.use((req : Request, res : Response) => {
+app.use((req: Request, res: Response) => {
   return res.status(400).json({
-    success : false,
-    message : 'API not Found',
-    error : ''
+    success: false,
+    message: 'API not Found',
+    error: '',
   })
 })
 

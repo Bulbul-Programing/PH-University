@@ -5,6 +5,7 @@ export type Days = 'Sat' | 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'
 export type TOfferedCourse = {
     semesterRegistration : Types.ObjectId
     academicFaculty : Types.ObjectId
+    academicSemester : Types.ObjectId
     academicDepartment : Types.ObjectId
     course : Types.ObjectId
     faculty : Types.ObjectId

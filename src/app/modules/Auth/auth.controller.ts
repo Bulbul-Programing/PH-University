@@ -11,7 +11,7 @@ const loginUser = catchAsync(async (req, res) => {
     secure: config.NODE_ENV === 'production',
     httpOnly: true,
   })
-
+  
   res.status(200).json({
     success: true,
     message: 'User is logged in successfully!',

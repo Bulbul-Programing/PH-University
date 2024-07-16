@@ -10,6 +10,7 @@ import { courseRouter } from "../modules/course/course.routes";
 import { semesterRegistrationRouter } from "../modules/semesterRegistration/semesterRegistration.routes";
 import { offerCourseRouter } from "../modules/OfferedCourse/OfferedCourse.routes";
 import { AuthRoutes } from "../modules/Auth/auth.routes";
+import { enrolledCourseRouter } from "../modules/enrolledCourse/enrolledCourse.routes";
 
 const router = Router()
 
@@ -57,6 +58,10 @@ const moduleRoutes = [
     {
         path: '/auth',
         route: AuthRoutes,
+    },
+    {
+        path: '/enrolled-courses',
+        route: enrolledCourseRouter,
     },
 ]
 

@@ -6,6 +6,7 @@ import { Days } from "./OfferedCourse.const";
 const offerCourseSchema = new Schema<TOfferedCourse>({
     semesterRegistration: { type: Schema.Types.ObjectId, required: true, ref: 'SemesterRegistration' },
     academicFaculty: { type: Schema.Types.ObjectId, required: true, ref: 'academicFaculty' },
+    academicSemester: { type: Schema.Types.ObjectId, required: true, ref: 'academicSemester' },
     academicDepartment: { type: Schema.Types.ObjectId, required: true, ref: 'academicFaculty' },
     course: { type: Schema.Types.ObjectId, required: true, ref: 'courseFaculty' },
     faculty: { type: Schema.Types.ObjectId, required: true, ref: 'faculty' },
